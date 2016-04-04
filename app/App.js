@@ -88,7 +88,29 @@ class SideBar extends React.Component {
 				<li className="Logo black-text"><b><a>Welcome to blah@blah</a></b></li>
 				<li className="bold"><a href="#!">First Sidebar Link</a></li>
 				<li><a href="#!">Second Sidebar Link</a></li>
+				<Slider/>
 			</ul>
+			)
+	}
+}
+
+class Slider extends React.Component {
+	constructor(props){
+		super(props);
+	}
+
+	render(){
+		return(
+			<li>
+				<div className="container">
+					<form action="#">
+						<p class="range-field">
+							<input type="range" id="test5" min="0" max="100" />
+						</p>
+					</form>
+				</div>
+
+			</li>
 			)
 	}
 }
