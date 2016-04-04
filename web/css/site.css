@@ -18,3 +18,21 @@ main {
 #map{
 	height:100%;
 }
+
+p.range-field{
+	position: relative;
+}
+
+p.range-label, p.range-field{
+	padding: 0px;
+	line-height: 40px;
+}
+
+.value{
+	color: #26a69a;
+}
+
+span.thumb, span.thumb.active{
+	line-height: 15px;
+	position: absolute;
+}

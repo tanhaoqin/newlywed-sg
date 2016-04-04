@@ -37,7 +37,6 @@ class GoogleMap extends React.Component {
 			center: this.mapCenterLatLng(),
 			zoom: this.initialZoom
 		}
-		console.log(mapOptions);
 		const map = new google.maps.Map(this.refs.map, mapOptions);
 		this.setState({map: map});
 	}
@@ -83,34 +82,97 @@ class TitleBar extends React.Component {
 
 class SideBar extends React.Component {
 	render(){
+		let sections = [];
+		const weights = [
+			{name: "Schools", initialWeight: 9},
+			{name: "Hospitals", initialWeight: 5},
+			{name: "Hello", initialWeight: 7},
+			{name: "World", initialWeight: 3}];
+		weights.forEach(function(weight){
+			sections.push(<Slider key={weight.name} weight={weight}/>);
+		});
 		return (
 			<ul id="slide-out" className="side-nav fixed">
 				<li className="Logo black-text"><b><a>Welcome to blah@blah</a></b></li>
-				<li className="bold"><a href="#!">First Sidebar Link</a></li>
-				<li><a href="#!">Second Sidebar Link</a></li>
-				<Slider/>
+				<li className="no-padding black-text">
+					<ul className="collapsible collapsible-accordion">
+						<li>
+							<a className="teal collapsible-header waves-effect waves-teal"><b>Weights</b></a>
+				            <div className="collapsible-body">
+				              <ul>
+				                {sections}
+				              </ul>
+				            </div>
+				        </li>
+					</ul>
+				</li>
 			</ul>
 			)
 	}
 }
 
 class Slider extends React.Component {
+
+	constructor(props){
+		super(props);
+		this.state = {value: this.props.weight.initialWeight};
+	}
+
+	handleUserInput(value){
+		this.setState({value: value});
+	}
+
+	render(){
+		return(
+			<li className="black-text section">
+			<div className="container">
+			<SliderLabel 
+				value={this.state.value}
+				name={this.props.weight.name}
+				/>
+			<SliderInput
+				value={this.state.value}
+				onUserInput={this.handleUserInput.bind(this)} />
+			</div>
+			</li>
+			)
+	}
+}
+
+class SliderInput extends React.Component {
+	
+	handleChange(){
+		let new_value = this.refs.rangeSliderInput.value;
+		// this.props.value = new_value;
+		this.props.onUserInput(
+			this.refs.rangeSliderInput.value);
+	}
+
+	render(){
+		return(
+			<form action="#">
+			<p className="range-field">
+				<input
+				ref="rangeSliderInput"
+				type="range"
+				min="0" 
+				max="10"
+				value={this.props.value}
+				onChange={this.handleChange.bind(this)}/>
+			</p>
+			</form>)
+	}
+}
+
+class SliderLabel extends React.Component{
+
 	constructor(props){
 		super(props);
 	}
 
 	render(){
 		return(
-			<li>
-				<div className="container">
-					<form action="#">
-						<p class="range-field">
-							<input type="range" id="test5" min="0" max="100" />
-						</p>
-					</form>
-				</div>
-
-			</li>
+			<p className="range-label">{this.props.name} {this.props.value}</p>
 			)
 	}
 }
