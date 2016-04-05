@@ -6,8 +6,8 @@ export default class App extends React.Component {
     render() {
         return (
         	<div>
-	        	<Nav />
-	        	<Content />
+	        	<Nav data={this.props.data}/>
+	        	<Content data={this.props.data}/>
         	</div>
         );
     }
@@ -17,7 +17,7 @@ class Content extends React.Component {
 	render(){
 		return (
 			<main>
-        		<GoogleMap />
+        		<GoogleMap data={this.props.data}/>
 	        </main>
 			)
 	}
@@ -39,6 +39,14 @@ class GoogleMap extends React.Component {
 		}
 		const map = new google.maps.Map(this.refs.map, mapOptions);
 		this.setState({map: map});
+		let markers = [];
+		let marker = new google.maps.Marker({
+			position: this.mapCenterLatLng(),
+			title: 'Hi', 
+			map: map
+			});
+		markers.push(marker);
+		this.setState({markers: markers});
 	}
 
 	mapCenterLatLng(){
@@ -54,13 +62,15 @@ class GoogleMap extends React.Component {
 	}
 }
 
+
+
 class Nav extends React.Component {
 	render(){
 		return (
 			<header>
 				<nav>
 					<TitleBar/>
-					<SideBar/>
+					<SideBar data={this.props.data}/>
 				</nav>
 			</header>	
 			)
@@ -82,22 +92,19 @@ class TitleBar extends React.Component {
 
 class SideBar extends React.Component {
 	render(){
-		let sections = [];
-		const weights = [
-			{name: "Schools", initialWeight: 9},
-			{name: "Hospitals", initialWeight: 5},
-			{name: "Hello", initialWeight: 7},
-			{name: "World", initialWeight: 3}];
+		let sections = []
+		let weights = this.props.data;
 		weights.forEach(function(weight){
 			sections.push(<Slider key={weight.name} weight={weight}/>);
 		});
+
 		return (
 			<ul id="slide-out" className="side-nav fixed">
 				<li className="Logo black-text"><b><a>Welcome to blah@blah</a></b></li>
 				<li className="no-padding black-text">
 					<ul className="collapsible collapsible-accordion">
 						<li>
-							<a className="teal collapsible-header waves-effect waves-teal"><b>Weights</b></a>
+							<a className="collapsible-header waves-effect waves-teal"><b>Weights</b></a>
 				            <div className="collapsible-body">
 				              <ul>
 				                {sections}
@@ -115,7 +122,9 @@ class Slider extends React.Component {
 
 	constructor(props){
 		super(props);
-		this.state = {value: this.props.weight.initialWeight};
+		this.state = {
+			value: this.props.weight.initialWeight, 
+			active: this.props.weight.active};
 	}
 
 	handleUserInput(value){
@@ -128,6 +137,7 @@ class Slider extends React.Component {
 			<div className="container">
 			<SliderLabel 
 				value={this.state.value}
+				active={this.state.active}
 				name={this.props.weight.name}
 				/>
 			<SliderInput
@@ -142,8 +152,6 @@ class Slider extends React.Component {
 class SliderInput extends React.Component {
 	
 	handleChange(){
-		let new_value = this.refs.rangeSliderInput.value;
-		// this.props.value = new_value;
 		this.props.onUserInput(
 			this.refs.rangeSliderInput.value);
 	}
@@ -151,7 +159,7 @@ class SliderInput extends React.Component {
 	render(){
 		return(
 			<form action="#">
-			<p className="range-field">
+			<div className="range-field">
 				<input
 				ref="rangeSliderInput"
 				type="range"
@@ -159,7 +167,7 @@ class SliderInput extends React.Component {
 				max="10"
 				value={this.props.value}
 				onChange={this.handleChange.bind(this)}/>
-			</p>
+			</div>
 			</form>)
 	}
 }
@@ -168,11 +176,33 @@ class SliderLabel extends React.Component{
 
 	constructor(props){
 		super(props);
+		this.state = {active: this.props.active};
+	}
+
+	click(){
+		this.setState({active: this.refs.weightCheckboxInput.checked});		
 	}
 
 	render(){
+		console.log(this.props.active);
 		return(
-			<p className="range-label">{this.props.name} {this.props.value}</p>
+			<form>
+			<div className="range-label row">
+				<div className="col s9">
+					<input 
+						ref="weightCheckboxInput"
+						type="checkbox" 
+						id={this.props.name} 
+						checked={this.state.active}
+						onChange={this.click.bind(this)}/>
+					<label
+						className={this.state.active ? "black-text" : ""}
+						ref="weightCheckboxLabel" 
+						htmlFor={this.props.name}>{this.props.name}</label>
+				</div>
+ 				<div className="col s3">{this.props.value}</div>
+				</div>
+			</form>
 			)
 	}
 }
