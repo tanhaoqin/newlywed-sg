@@ -1,208 +1,341 @@
+'use strict';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
+// import { Map, Marker, Popup, TileLayer, Polygon } from 'react-leaflet';
+// import {GoogleMapLoader, GoogleMap, Marker, InfoWindow} from "react-google-maps";
+import {data} from './data';
+import {schools} from './schools';
 
 export default class App extends React.Component {
     
+    constructor() {
+        super();
+        this.state = {data: data,
+            schools: schools};
+    }
+
+    handleChange(data){
+        console.log('App: handleChange');
+        console.log(data);
+        this.setState({
+            data: data
+        });
+    }
+
     render() {
         return (
-        	<div>
-	        	<Nav data={this.props.data}/>
-	        	<Content data={this.props.data}/>
-        	</div>
+            <div>
+                <Nav data={this.state.data} onChange={this.handleChange.bind(this)}/>
+                <Content data={this.state.data} schools={this.state.schools}/>
+            </div>
         );
     }
 }
 
 class Content extends React.Component {
-	render(){
-		return (
-			<main>
-        		<GoogleMap data={this.props.data}/>
-	        </main>
-			)
-	}
+
+    constructor(props){
+        super(props);
+        this.initialZoom = 12;
+        this.startLatLng = {lat: 1.3521, lng:103.8198};
+    }
+
+    render(){
+        return(
+            <main><div id="map-container">
+            <LeafletMap 
+                showSchoolMarkers={this.props.data['Schools'].active}
+                schools={this.props.schools}/>
+            </div></main>)
+    }
 }
 
-class GoogleMap extends React.Component {
+class LeafletMap extends React.Component {
 
-	constructor(props){
-		super(props);
-		this.initialZoom = 12;
-		this.mapCenterLat = 1.3521;
-		this.mapCenterLng = 103.8198;
-	}
+ constructor(props){
+     super(props);
+     this.initialZoom = 12;
+     this.mapCenterLat = 1.3521;
+     this.mapCenterLng = 103.8198;
 
-	componentDidMount(){
-		let mapOptions = {
-			center: this.mapCenterLatLng(),
-			zoom: this.initialZoom
-		}
-		const map = new google.maps.Map(this.refs.map, mapOptions);
-		this.setState({map: map});
-		let markers = [];
-		let marker = new google.maps.Marker({
-			position: this.mapCenterLatLng(),
-			title: 'Hi', 
-			map: map
-			});
-		markers.push(marker);
-		this.setState({markers: markers});
-	}
+     this.state = {schoolMarkers: null};
+ }
 
-	mapCenterLatLng(){
-		let props = this.props;
-		return new google.maps.LatLng(this.mapCenterLat,this.mapCenterLng);
-	}
+ componentWillUpdate(nextProps, nextState){
+    console.log('componentWillUpdate');
+    // console.log(nextProps.showSchoolMarkers);
+    // console.log(this.map);
+    if(!nextProps.showSchoolMarkers){
+        console.log('Removing school markers');
+        this.map.removeLayer(nextState['schoolMarkers']);
+    } else {
+        console.log(nextState['schoolMarkers']);
+        nextState['schoolMarkers'].addTo(this.map);
+    }
+    // this.map.remove(nextState['schoolMarkers']);
+    // nextState = {};
+    // this.map.remove(this.state.schoolMarkers);
+ }
 
-	render(){
-		return (
-			<div id="map"
-				ref="map"></div>
-			)
-	}
+ componentDidMount(){
+     // let mapOptions = {
+     //  center: this.mapCenterLatLng(),
+     //  zoom: this.initialZoom
+     // }
+     const map = L.map('map').setView([this.mapCenterLat, this.mapCenterLng], 13);
+     this.map = map;
+     const osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+         maxZoom: 19,
+         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+     });
+     map.addLayer(osm);
+
+     const myStyle = {
+         "color": "#ff7800",
+         "weight": 5,
+         "opacity": 0.65
+     };
+
+     const geojsonMarkerOptions = {
+         radius: 8,
+         fillColor: "#ff7800",
+         color: "#000",
+         weight: 1,
+         opacity: 1,
+         fillOpacity: 0.8
+     };
+
+     if (this.props.showSchoolMarkers){
+         var schoolLayer = L.geoJson(this.props.schools, {
+             pointToLayer: function (feature, latlng) {
+                 return L.circleMarker(latlng, geojsonMarkerOptions);
+             }
+         })
+         schoolLayer.addTo(map);        
+     } else {
+        if (this.state.schoolMarkers != null){
+            console.log('hehe');
+        }
+     }
+     this.setState({schoolMarkers: schoolLayer});
+ }
+
+ componentWillUnmount(){
+    this.map = null;
+ }
+
+ render(){
+     return (
+         <div id="map"
+             ref="map"></div>
+         )
+ }
 }
 
+class SchoolMarker extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            divIconHtml: React.renderToStaticMarkup(
+                )
+        };
+    }
+
+    render() {
+        return <div></div>;
+    }
+}
 
 class Nav extends React.Component {
-	render(){
-		return (
-			<header>
-				<nav>
-					<TitleBar/>
-					<SideBar data={this.props.data}/>
-				</nav>
-			</header>	
-			)
-	}
+
+    render(){
+        return (
+            <header>
+                <nav>
+                    <TitleBar/>
+                    <SideBar data={this.props.data} onChange={this.props.onChange}/>
+                </nav>
+            </header>   
+            )
+    }
 
 }
 
 class TitleBar extends React.Component {
-	render(){
-		return (
-			<h1 
-				className="container">
-				<div className="nav-wrapper">Newlyweds@SG
-				</div>
-			</h1>
-			)
-	}
+    render(){
+        return (
+            <h1 
+                className="container">
+                <div className="nav-wrapper">Where To BTO?
+                </div>
+            </h1>
+            )
+    }
 }
 
 class SideBar extends React.Component {
-	render(){
-		let sections = []
-		let weights = this.props.data;
-		weights.forEach(function(weight){
-			sections.push(<Slider key={weight.name} weight={weight}/>);
-		});
 
-		return (
-			<ul id="slide-out" className="side-nav fixed">
-				<li className="Logo black-text"><b><a>Welcome to blah@blah</a></b></li>
-				<li className="no-padding black-text">
-					<ul className="collapsible collapsible-accordion">
-						<li>
-							<a className="collapsible-header waves-effect waves-teal"><b>Weights</b></a>
-				            <div className="collapsible-body">
-				              <ul>
-				                {sections}
-				              </ul>
-				            </div>
-				        </li>
-					</ul>
-				</li>
-			</ul>
-			)
-	}
+    constructor(props){
+        super(props);
+        this.state = {data : this.props.data};
+    }
+
+    handleSliderChange(key, weight){
+        console.log('SideBar: handleSliderChange('+key+","+weight.value+","+weight.active+')');
+        var temp = this.state.data;
+        temp[key] = weight;
+        this.setState({data: temp});
+        this.props.onChange(this.state.data);
+    }
+
+    render(){
+        const callback = this.handleSliderChange.bind(this);
+        let sections = []
+        let weights = this.state.data;
+        Object.keys(weights).forEach(function(key){
+            sections.push(<Slider 
+                key={key}
+                name={key} 
+                weight={weights[key]}
+                onChange={callback}/>);
+        });
+        const weightDesc = "Use these weights to help you decide on the features you wish to prioritise.";
+        const profileDesc = "Select from these profiles that you think suits you";
+        return (
+            <ul id="slide-out" className="side-nav fixed">
+                <li className="Logo black-text"><b><a>Welcome to blah@blah</a></b></li>
+                <SideBarSection title="Weights" 
+                sections={sections} 
+                desc={weightDesc}/>
+                <SideBarSection title="Profile" sections={sections} desc={profileDesc}/>
+            </ul>
+            )
+    }
+}
+
+class SideBarSection extends React.Component{
+
+    render(){
+        return (
+                <li className="no-padding black-text">
+                    <ul className="collapsible collapsible-accordion">
+                        <li>
+                            <a className="collapsible-header waves-effect waves-teal"><b>{this.props.title}</b>
+                            </a>
+                            <div className="collapsible-body">
+                             <p className="section-description">{this.props.desc}</p>
+                              <ul>
+                                {this.props.sections}
+                              </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            )
+    }
+
 }
 
 class Slider extends React.Component {
 
-	constructor(props){
-		super(props);
-		this.state = {
-			value: this.props.weight.initialWeight, 
-			active: this.props.weight.active};
-	}
+    constructor(props){
+        super(props);
+        this.state = {
+            value: this.props.weight.initialWeight, 
+            active: this.props.weight.active};
+    }
 
-	handleUserInput(value){
-		this.setState({value: value});
-	}
+    handleUserInput(value){
+        this.setState({value: value});
+        this.props.onChange(this.props.name, this.state);
+    }
 
-	render(){
-		return(
-			<li className="black-text section">
-			<div className="container">
-			<SliderLabel 
-				value={this.state.value}
-				active={this.state.active}
-				name={this.props.weight.name}
-				/>
-			<SliderInput
-				value={this.state.value}
-				onUserInput={this.handleUserInput.bind(this)} />
-			</div>
-			</li>
-			)
-	}
+    handleCheck(active){
+        console.log('Slider: handleCheck('+active+')');
+        let tempState = this.state;
+        tempState.active = active;
+        this.props.onChange(this.props.name, tempState);
+    }
+
+    render(){
+        return(
+            <li className="black-text section">
+            <div className="container">
+            <SliderLabel 
+                value={this.state.value}
+                active={this.state.active}
+                title={this.props.name}
+                onUserInput={this.handleCheck.bind(this)}
+                />
+            <SliderInput
+                value={this.state.value}
+                onUserInput={this.handleUserInput.bind(this)} />
+            </div>
+            </li>
+            )
+    }
 }
 
 class SliderInput extends React.Component {
-	
-	handleChange(){
-		this.props.onUserInput(
-			this.refs.rangeSliderInput.value);
-	}
+    
+    handleChange(){
+        this.props.onUserInput(
+            this.refs.rangeSliderInput.value);
+    }
 
-	render(){
-		return(
-			<form action="#">
-			<div className="range-field">
-				<input
-				ref="rangeSliderInput"
-				type="range"
-				min="0" 
-				max="10"
-				value={this.props.value}
-				onChange={this.handleChange.bind(this)}/>
-			</div>
-			</form>)
-	}
+    render(){
+        return(
+            <form action="#">
+            <div className="range-field">
+                <input
+                ref="rangeSliderInput"
+                type="range"
+                min="0" 
+                max="10"
+                value={this.props.value}
+                onChange={this.handleChange.bind(this)}/>
+            </div>
+            </form>)
+    }
 }
 
 class SliderLabel extends React.Component{
 
-	constructor(props){
-		super(props);
-		this.state = {active: this.props.active};
-	}
+    constructor(props){
+        super(props);
+        this.state = {active: this.props.active};
+    }
 
-	click(){
-		this.setState({active: this.refs.weightCheckboxInput.checked});		
-	}
+    handleChange(event){
+        console.log('SliderLabel: handleChange('+this.refs.weightCheckboxInput.checked+')');
+        this.setState({active: this.refs.weightCheckboxInput.checked});     
+        // this.setState({active: !this.state.active});
+        this.props.onUserInput(this.refs.weightCheckboxInput.checked);
+    }
 
-	render(){
-		console.log(this.props.active);
-		return(
-			<form>
-			<div className="range-label row">
-				<div className="col s9">
-					<input 
-						ref="weightCheckboxInput"
-						type="checkbox" 
-						id={this.props.name} 
-						checked={this.state.active}
-						onChange={this.click.bind(this)}/>
-					<label
-						className={this.state.active ? "black-text" : ""}
-						ref="weightCheckboxLabel" 
-						htmlFor={this.props.name}>{this.props.name}</label>
-				</div>
- 				<div className="col s3">{this.props.value}</div>
-				</div>
-			</form>
-			)
-	}
+    render(){
+        return(
+            <form>
+            <div className="range-label row">
+                <div className="col s9">
+                    <input 
+                        ref="weightCheckboxInput"
+                        type="checkbox" 
+                        id={this.props.title} 
+                        defaultChecked={this.state.active}
+                        onChange={this.handleChange.bind(this)}/>
+                    <label
+                        className={this.state.active ? "black-text" : ""}
+                        ref="weightCheckboxLabel" 
+                        htmlFor={this.props.title}>
+                        {this.props.title}
+                    </label>
+                </div>
+                <div className="col s3">{this.props.value}</div>
+                </div>
+            </form>
+            )
+    }
 }

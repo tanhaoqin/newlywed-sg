@@ -15,7 +15,7 @@ main {
 	width: 100%;
 }
 
-#map{
+#map-container, #map{
 	height:100%;
 }
 
@@ -36,4 +36,8 @@ div.range-label.row, div.range-field{
 span.thumb, span.thumb.active{
 	line-height: 15px;
 	position: absolute;
+}
+
+p.section-description {
+	line-height: 15px;
 }
