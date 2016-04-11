@@ -37,8 +37,6 @@ class Content extends React.Component {
 
     constructor(props){
         super(props);
-        this.initialZoom = 12;
-        this.startLatLng = {lat: 1.3521, lng:103.8198};
     }
 
     render(){
@@ -46,6 +44,7 @@ class Content extends React.Component {
             <main><div id="map-container">
             <LeafletMap 
                 showSchoolMarkers={this.props.data['Schools'].active}
+                schoolMarkerRange={this.props.data['Schools'].value}
                 schools={this.props.schools}/>
             </div></main>)
     }
@@ -64,18 +63,17 @@ class LeafletMap extends React.Component {
 
  componentWillUpdate(nextProps, nextState){
     console.log('componentWillUpdate');
-    // console.log(nextProps.showSchoolMarkers);
-    // console.log(this.map);
     if(!nextProps.showSchoolMarkers){
         console.log('Removing school markers');
         this.map.removeLayer(nextState['schoolMarkers']);
     } else {
-        console.log(nextState['schoolMarkers']);
+        console.log('Adding school markers');
         nextState['schoolMarkers'].addTo(this.map);
     }
-    // this.map.remove(nextState['schoolMarkers']);
-    // nextState = {};
-    // this.map.remove(this.state.schoolMarkers);
+    console.log('LeafletMap: currentState: ');
+    console.log(this.state);
+    console.log('LeafletMap: nextState: ');
+    console.log(nextState);
  }
 
  componentDidMount(){
@@ -83,7 +81,7 @@ class LeafletMap extends React.Component {
      //  center: this.mapCenterLatLng(),
      //  zoom: this.initialZoom
      // }
-     const map = L.map('map').setView([this.mapCenterLat, this.mapCenterLng], 13);
+     const map = L.map('map').setView([this.mapCenterLat, this.mapCenterLng], this.initialZoom);
      this.map = map;
      const osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
          maxZoom: 19,
@@ -111,7 +109,7 @@ class LeafletMap extends React.Component {
              pointToLayer: function (feature, latlng) {
                  return L.circleMarker(latlng, geojsonMarkerOptions);
              }
-         })
+         });
          schoolLayer.addTo(map);        
      } else {
         if (this.state.schoolMarkers != null){
@@ -119,6 +117,23 @@ class LeafletMap extends React.Component {
         }
      }
      this.setState({schoolMarkers: schoolLayer});
+     this.addBuffer(this.props.schools, Number(this.props.schoolMarkerRange));
+ }
+
+ addBuffer(data, weight){
+    let buffer_data = turf.buffer(data, weight/5, 'kilometers');
+    buffer_data.properties = {
+        "fill": "#6BC65F",
+        "stroke": "#25561F",
+        "stroke-width": 2
+    };
+    let buffer_polygons = L.geoJson(buffer_data, {
+        pointToLayer: function (feature, latlng) {
+            return L.polygon(latlng);
+        }
+    });
+    buffer_polygons.addTo(this.map);
+    this.setState({schoolBuffers: buffer_polygons});
  }
 
  componentWillUnmount(){
@@ -243,7 +258,7 @@ class Slider extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            value: this.props.weight.initialWeight, 
+            value: this.props.weight.value, 
             active: this.props.weight.active};
     }
 
