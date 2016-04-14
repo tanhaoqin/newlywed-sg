@@ -1,6 +1,8 @@
 export const data = {
-  	Schools: {value: 9, active: true},
-	Hospitals: {value: 5, active: true},
-	Hello: {value: 7, active: false },
-	World: {value: 3, active: true},
+	Medical: {value: 9, active: true},
+	Shopping: {value: 5, active: true},
+	Education: {value: 7, active: true },
+	Care: {value: 3, active: true},
+	Others: {value: 3, active: true},
+	Transportation: {value: 3, active: true},
 };

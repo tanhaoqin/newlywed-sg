@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 // import { Map, Marker, Popup, TileLayer, Polygon } from 'react-leaflet';
 // import {GoogleMapLoader, GoogleMap, Marker, InfoWindow} from "react-google-maps";
 import {data} from './data';
+import {profile} from './profile';
 import {schools} from './schools';
 
 export default class App extends React.Component {
@@ -26,7 +27,9 @@ export default class App extends React.Component {
     render() {
         return (
             <div>
-                <Nav data={this.state.data} onChange={this.handleChange.bind(this)}/>
+                <Nav 
+                    data={this.state.data}
+                    onChange={this.handleChange.bind(this)}/>
                 <Content data={this.state.data} schools={this.state.schools}/>
             </div>
         );
@@ -43,8 +46,8 @@ class Content extends React.Component {
         return(
             <main><div id="map-container">
             <LeafletMap 
-                showSchoolMarkers={this.props.data['Schools'].active}
-                schoolMarkerRange={this.props.data['Schools'].value}
+                showSchoolMarkers={this.props.data['Education'].active}
+                schoolMarkerRange={this.props.data['Education'].value}
                 schools={this.props.schools}/>
             </div></main>)
     }
@@ -117,7 +120,7 @@ class LeafletMap extends React.Component {
         }
      }
      this.setState({schoolMarkers: schoolLayer});
-     this.addBuffer(this.props.schools, Number(this.props.schoolMarkerRange));
+     // this.addBuffer(this.props.schools, Number(this.props.schoolMarkerRange));
  }
 
  addBuffer(data, weight){
@@ -224,7 +227,7 @@ class SideBar extends React.Component {
                 <SideBarSection title="Weights" 
                 sections={sections} 
                 desc={weightDesc}/>
-                <SideBarSection title="Profile" sections={sections} desc={profileDesc}/>
+                <SideBarSection title="Profile" desc={profileDesc}/>
             </ul>
             )
     }
