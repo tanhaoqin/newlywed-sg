@@ -242,6 +242,7 @@ class SideBarSection extends React.Component{
                         <li>
                             <a className="collapsible-header waves-effect waves-teal"><b>{this.props.title}</b>
                             </a>
+                            
                             <div className="collapsible-body">
                              <p className="section-description">{this.props.desc}</p>
                               <ul>
