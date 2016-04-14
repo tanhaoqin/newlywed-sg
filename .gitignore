@@ -1,0 +1,7 @@
+app/searchableTable.js
+web/js/bundle.js
+web/js/vendors.js
+node_modules/
+web/.DS_Store
+.DS_Store
+.Rproj.user
