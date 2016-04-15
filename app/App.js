@@ -45,10 +45,12 @@ class Content extends React.Component {
     render(){
         return(
             <main><div id="map-container">
+            <Card />
             <LeafletMap 
                 showSchoolMarkers={this.props.data['Education'].active}
                 schoolMarkerRange={this.props.data['Education'].value}
                 schools={this.props.schools}/>
+
             </div></main>)
     }
 }
@@ -171,10 +173,7 @@ class Nav extends React.Component {
     render(){
         return (
             <header>
-                <nav>
-                    <TitleBar/>
                     <SideBar data={this.props.data} onChange={this.props.onChange}/>
-                </nav>
             </header>   
             )
     }
@@ -189,6 +188,23 @@ class TitleBar extends React.Component {
                 <div className="nav-wrapper">Where To BTO?
                 </div>
             </h1>
+            )
+    }
+}
+
+class Card extends React.Component {
+    render(){
+        return (
+            <div className="profile-card card blue-grey darken-1">
+            <div className="card-content white-text">
+              <span className="card-title">Profiles</span>
+              <p>Feel free to choose from these default profiles which describes you best.</p>
+            </div>
+            <div className="card-action row">
+                <div className="col s6"><a href="#">We focus on careers.</a></div>
+                <div className="col s6"><a href="#">We want a family.</a></div>
+            </div>
+          </div>
             )
     }
 }
@@ -222,8 +238,10 @@ class SideBar extends React.Component {
         const weightDesc = "Use these weights to help you decide on the features you wish to prioritise.";
         const profileDesc = "Select from these profiles that you think suits you";
         return (
-            <ul id="slide-out" className="side-nav fixed">
-                <li className="Logo black-text"><b><a>Welcome to blah@blah</a></b></li>
+            <ul id="slide-out" className="side-nav fixed blue-grey darken-1">
+                <li className="Logo black-text">
+                <h4>Where To BTO</h4>
+                <p className="section-description">Add description on how to use the application</p></li>
                 <SideBarSection title="Weights" 
                 sections={sections} 
                 desc={weightDesc}/>
@@ -240,7 +258,7 @@ class SideBarSection extends React.Component{
                 <li className="no-padding black-text">
                     <ul className="collapsible collapsible-accordion">
                         <li>
-                            <a className="collapsible-header waves-effect waves-teal"><b>{this.props.title}</b>
+                            <a className="collapsible-header waves-effect waves-light"><b>{this.props.title}</b>
                             </a>
                             
                             <div className="collapsible-body">
