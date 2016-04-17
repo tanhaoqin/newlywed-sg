@@ -30,6 +30,8 @@
     "react-dom": "^0.14.8",
     "react-google-maps": "^4.9.1",
     "react-leaflet": "^0.10.2",
+    "react-redux": "^4.4.5",
+    "redux": "^3.4.0",
     "turf": "^2.0.2"
   }
 }

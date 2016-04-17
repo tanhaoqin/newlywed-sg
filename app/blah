@@ -1,0 +1,89 @@
+	weights: {
+		Medical: {
+		name: "Medical",
+		enabled: true,
+		weights: {
+			Polyclinic: {
+				name: "Polyclinic", 
+				enabled: true, 
+				value: 6},
+			GeneralHospital: {
+				name: "General Hospital", 
+				enabled: true, 
+				value: 3}
+		}
+	},
+	Shopping: {
+		name: "Shopping",
+		enabled: true,
+		weights: {
+			Supermarket: {
+				name: "Supermarket", 
+				enabled: true, 
+				value: 8},
+			ShoppingMall: {
+				name: "Shopping Mall", 
+				enabled: true, 
+				value: 2}
+		}
+	},
+	EducationInstitutions: {
+		name: "Education Institutions",
+		enabled: true,
+		weights: {
+			Primary: {
+				name: "Primary", 
+				enabled: true, 
+				value: 9},
+			Secondary: {
+				name: "Secondary", 
+				enabled: true, 
+				value: 7},
+			Tertiary: {
+				name: "Tertiary", 
+				enabled: true, 
+				value: 5},
+		}
+	},
+	CareFacilities: {
+		name: "Care Facilities",
+		enabled: true,
+		weights: {
+			Childcare: {
+				name: "Childcare", 
+				enabled: true, 
+				value: 10},
+			Eldercare: {
+				name: "Eldercare", 
+				enabled: true, 
+				value: 8},
+		}
+	},
+	Others: {
+		name: "Others",
+		enabled: true,
+		weights: {
+			PoliceStations: {
+				name: "Police Stations", 
+				enabled: true, 
+				value: 3},
+			FireStations: {
+				name: "Fire Stations", 
+				enabled: true, 
+				value: 1},
+			Libraries: {
+				name: "Libraries", 
+				enabled: true, 
+				value: 5},
+		}
+	},
+	Transportation: {
+		name: "Transportation",
+		enabled: true,
+		weights: {
+			MRT: {
+				name: "MRT", 
+				enabled: true, 
+				value: 10},
+		}
+	}
