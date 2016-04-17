@@ -1,5 +1,5 @@
 import CardContainer from '../containers/CardContainer';
-import LeafletMap from './LeafletMap';
+import MapContainer from '../containers/MapContainer';
 import React from 'react';
 
 export default class Content extends React.Component {
@@ -11,10 +11,7 @@ export default class Content extends React.Component {
         return(
             <main><div id="map-container">
             <CardContainer />
-            <LeafletMap 
-                showSchoolMarkers={this.props.data['Education'].active}
-                schoolMarkerRange={this.props.data['Education'].value}
-                schools={this.props.schools}/>
+            <MapContainer />
 
             </div></main>)
     }
