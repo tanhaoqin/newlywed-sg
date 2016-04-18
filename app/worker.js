@@ -3,18 +3,28 @@ import aggregate from 'geojson-polygon-aggregate';
 export default function(self) {
 
   self.addEventListener('message', function(ev) {
-    const data = ev.data[0];
-    const layers = ev.data[1];
-    self.makeRequest(data, layers);
+    const features = ev.data[0];
+    const weights = ev.data[1];
+    // console.log(features);
+    // console.log(weights);
+    self.evaluateSum(features, weights);
   });
 
-  self.makeRequest = function(data, layers) {
-    const aggregation = {
-        weightSum: aggregate.sum('weight'),
+  self.evaluateSum = function(features, weights) {
+    let max = 0;
+    for (let feature of features){
+      let properties = feature.properties;
+      let weightSum = 0;
+      Object.keys(weights).forEach(function(key){
+        weightSum += Number(properties[key])*Number(weights[key]);
+        // console.log(key + ' ' + Number(properties[key]) + ' ' + Number(weights[key]));
+      });
+      feature.properties.weightSum = weightSum;
+      if (weightSum > max){
+        max = weightSum;
+      }
     };
-    let results = aggregate(
-        data['Hexclip'], layers, aggregation);
-    self.postMessage(['Done', results]);
-
+    // console.log(features);
+    self.postMessage(['Done', features, max]);
   };
 };

@@ -31,7 +31,7 @@ export default class SideBar extends React.Component {
         const weightDesc = "Use these weights to help you decide on the features you wish to prioritise.";
         const profileDesc = "Select from these profiles that you think suits you";
         return (
-            <ul id="slide-out" className="side-nav fixed blue-grey darken-1">
+            <ul id="slide-out" className="side-nav fixed blue-grey">
                 <li className="Logo black-text">
                 <h4>Where To BTO</h4>
                 <p className="section-description">Add description on how to use the application</p></li>

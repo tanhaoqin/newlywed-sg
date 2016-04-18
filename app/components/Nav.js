@@ -26,8 +26,8 @@ export default class Nav extends React.Component {
         });
         return (
         	<header>
-	            <ul id="slide-out" className="side-nav fixed blue-grey darken-1">
-	                <li className="Logo black-text">
+	            <ul id="slide-out" className="side-nav fixed blue-grey">
+	                <li className="Logo white-text">
 	                <h4>Where To BTO</h4>
 	                <p className="section-description">Add description on how to use the application</p></li>
 	                {sections}

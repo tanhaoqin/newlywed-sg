@@ -18,10 +18,10 @@ export default class SideBarSection extends React.Component{
                 />);
         });
         return (
-                <li className="no-padding black-text">
+                <li className="no-padding white">
                     <ul className="collapsible collapsible-accordion">
                         <li>
-                            <a className="collapsible-header waves-effect waves-light"><b>{this.props.title}</b>
+                            <a className="collapsible-header waves-effect waves-light black-text"><b>{this.props.title}</b>
                             </a>
                             
                             <div className="collapsible-body">

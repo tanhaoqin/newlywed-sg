@@ -54,3 +54,12 @@ div.profile-card {
 div.card-action.row{
 	padding-bottom: 0px;
 }
+
+.preloader-wrapper{
+	position: absolute;
+	left: 50%;
+    margin-left: -32px;
+    top: 50%;
+    margin-top: -32px;
+	z-index: 1;
+}

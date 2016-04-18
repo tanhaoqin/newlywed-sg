@@ -1,10 +1,6 @@
-import { GeneralHospital } from './GeneralHospital'
-import { Polyclinic } from './Polyclinic'
-import { Hexclip} from './Hexclip'
+import { Hexclip } from './Hexclip';
 
 const data = {
-	Polyclinic: Polyclinic,
-	GeneralHospital: GeneralHospital,
 	Hexclip: Hexclip,
 }
 

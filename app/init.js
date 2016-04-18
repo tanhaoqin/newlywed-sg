@@ -2,31 +2,31 @@ export const init = {
 	profiles:{
 		FAMILY: {
 			Polyclinic: 6 ,
-			GeneralHospital: 3,
-			Supermarket: 8,
-			ShoppingMall: 2,
+			GeneralHos: 3,
+			Supermarke: 8,
+			ShoppingMa: 2,
 			Primary: 9,
 			Secondary: 7,
 			Tertiary: 5,
 			Childcare : 10,
 			Eldercare: 8,
-			PoliceStations: 3,
-			FireStations: 1,
-			Libraries: 5,
+			PoliceStat: 3,
+			FireStatio: 1,
+			Library: 5,
 			MRT: 10,
 		}, CAREER: {
 			Polyclinic: 2 ,
-			GeneralHospital: 1,
-			Supermarket: 3,
-			ShoppingMall: 10,
+			GeneralHos: 1,
+			Supermarke: 3,
+			ShoppingMa: 10,
 			Primary: 0,
 			Secondary: 0,
 			Tertiary: 0,
 			Childcare : 0,
 			Eldercare: 0,
-			PoliceStations: 7,
-			FireStations: 1,
-			Libraries: 2,
+			PoliceStat: 7,
+			FireStatio: 1,
+			Library: 2,
 			MRT: 5
 		}
 	},
@@ -37,18 +37,18 @@ export const init = {
 				Polyclinic: {
 					name: "Polyclinic", 
 					},
-				GeneralHospital: {
-					name: "General Hospital", 
+				GeneralHos: {
+					name: "Hospital", 
 					value: 3}
 			}
 		},
 		Shopping: {
 			name: "Shopping",
 			weights: {
-				Supermarket: {
+				Supermarke: {
 					name: "Supermarket", 
 					},
-				ShoppingMall: {
+				ShoppingMa: {
 					name: "Shopping Mall", 
 					value: 2}
 			}
@@ -78,20 +78,6 @@ export const init = {
 					},
 			}
 		},
-		Others: {
-			name: "Others",
-			weights: {
-				PoliceStations: {
-					name: "Police Stations", 
-					},
-				FireStations: {
-					name: "Fire Stations", 
-					},
-				Libraries: {
-					name: "Libraries", 
-					},
-			}
-		},
 		Transportation: {
 			name: "Transportation",
 			weights: {
@@ -99,36 +85,50 @@ export const init = {
 					name: "MRT", 
 					},
 			}
-		}
+		},
+		Others: {
+			name: "Others",
+			weights: {
+				PoliceStat: {
+					name: "Police Dept", 
+					},
+				FireStatio: {
+					name: "Fire Dept", 
+					},
+				Library: {
+					name: "Libraries", 
+					},
+			}
+		},
 	},
 	weights: {
 		Polyclinic: 6 ,
-		GeneralHospital: 3,
-		Supermarket: 8,
-		ShoppingMall: 2,
+		GeneralHos: 3,
+		Supermarke: 8,
+		ShoppingMa: 2,
 		Primary: 9,
 		Secondary: 7,
 		Tertiary: 5,
 		Childcare : 10,
 		Eldercare: 8,
-		PoliceStations: 3,
-		FireStations: 1,
-		Libraries: 5,
+		PoliceStat: 3,
+		FireStatio: 1,
+		Library: 5,
 		MRT: 10,
 	}, 
 	filters: {
 		Polyclinic: true,
-		GeneralHospital: true,
-		Supermarket: false,
-		ShoppingMall: false,
+		GeneralHos: true,
+		Supermarke: false,
+		ShoppingMa: false,
 		Primary: false,
 		Secondary: false,
 		Tertiary: false,
 		Childcare : false,
 		Eldercare: false,
-		PoliceStations: false,
-		FireStations: false,
-		Libraries: false,
+		PoliceStat: false,
+		FireStatio: false,
+		Library: false,
 		MRT: false,
 	}
 };

@@ -13,7 +13,7 @@ export default class Slider extends React.Component {
 
     render(){
         return(
-            <li className="black-text section">
+            <li className="black-text white section">
             <div className="container">
             <SliderLabel 
                 id={this.props.id}

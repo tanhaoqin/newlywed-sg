@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux'
 import weights from './weights'
-import filters from './filters'
+import waiting from './waiting'
 
 const whereToBto = combineReducers({
-	weights, filters
+	weights, waiting
 });
 
 export default whereToBto

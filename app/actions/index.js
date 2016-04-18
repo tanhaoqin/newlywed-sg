@@ -12,3 +12,10 @@ export const setWeight = (key, weight) => {
 		weight: weight
 	}
 }
+
+export const waiting = (value) =>{
+	return {
+		type: 'WAITING',
+		value: value
+	}
+}

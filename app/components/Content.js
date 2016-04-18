@@ -12,7 +12,6 @@ export default class Content extends React.Component {
             <main><div id="map-container">
             <CardContainer />
             <MapContainer />
-
             </div></main>)
     }
 }

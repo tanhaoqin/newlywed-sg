@@ -22,7 +22,7 @@ export default class SliderLabel extends React.Component{
     render(){
         return(
             <form>
-            <div className="range-label row">
+            <div className="range-label row black-text">
                 <div className="col s9">
                     <input 
                         ref="weightCheckboxInput"
