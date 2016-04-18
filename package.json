@@ -19,6 +19,8 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
+    "async-task": "^0.3.25",
+    "babel-polyfill": "^6.7.4",
     "body-parser": "^1.15.0",
     "classnames": "^2.2.3",
     "cookie-parser": "^1.4.1",
@@ -27,12 +29,14 @@
     "json-loader": "^0.5.4",
     "leaflet": "^0.7.7",
     "morgan": "^1.7.0",
+    "promise": "^7.1.1",
     "react": "^0.14.8",
     "react-dom": "^0.14.8",
     "react-google-maps": "^4.9.1",
     "react-leaflet": "^0.10.2",
     "react-redux": "^4.4.5",
     "redux": "^3.4.0",
-    "turf": "^2.0.2"
+    "turf": "^2.0.2",
+    "webworkify": "^1.1.0"
   }
 }

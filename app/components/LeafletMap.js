@@ -1,6 +1,10 @@
 import data from '../data';
 import React from 'react';
 import aggregate from 'geojson-polygon-aggregate';
+import AsyncTask from 'async-task';
+import work from 'webworkify';
+
+const w = work(require('../worker.js'));
 
 export default class LeafletMap extends React.Component {
 
@@ -18,8 +22,33 @@ export default class LeafletMap extends React.Component {
  }
 
  componentDidUpdate(){
-    var results = this.processData(this.props);
-    this.drawHexclip(results);
+    const layer = this.processWeights();
+    // const results = processData(that);
+    const drawHexclip = this.drawHexclip;
+    const that = this;
+    w.addEventListener('message', function(e){
+        let results = e.data[1];
+        let hexClip = drawHexclip(that, results);
+        that.hexClip = hexClip;
+    });
+    w.postMessage([data, layer]);
+
+    // let p1 = new Promise(
+    //     function(resolve, reject){
+    //         console.log("Data processing promise started");
+    //         resolve(processData(that));
+    //     });
+    // p1
+    // .then(function(results){
+    //     console.log("Success");
+    //     new Promise(function(resolve, reject){
+    //         console.log("Drawing promise started");
+    //         drawHexclip(that, results);
+    //     });
+    // })
+    // .catch(function(err){
+    //     console.log("Error: "+err);
+    // });
  }
 
  componentDidMount(){
@@ -47,30 +76,42 @@ export default class LeafletMap extends React.Component {
          opacity: 1,
          fillOpacity: 0.8
      };
-
-    var results = this.processData(this.props);
-    this.drawHexclip(results);
+     var marker = L.marker([this.mapCenterLat, this.mapCenterLng], 
+        {
+            draggable: true,
+        }).addTo(map);
+     L.popup()
+        .setLatLng([this.mapCenterLat+0.012, this.mapCenterLng])
+        .setContent("Move this marker to indicate the exact location you want to near to")
+        .openOn(map);
+    // var results = this.processData(this.props);
+    // this.drawHexclip(results);
     // const props = this.props;
-    // const processData = this.processData;
+    const that = this;
+    const processData = this.processData;
+    const drawHexclip = this.drawHexclip;
     // let p1 = new Promise(
     //     function(resolve, reject){
     //         console.log("Promise started");
-    //         processData(props);
+    //         resolve(processData(that));
     //     });
-    // console.log(p1);
     // p1
-    // .then(function(val){
+    // .then(function(results){
     //     console.log("Success");
-    //     console.log(val);
+    //     drawHexclip(that, results);
     //     })
     // .catch(function(err){
     //     console.log("Error: "+err);
     // });
+    let layers = this.processWeights();
+    let results  = processData(data,layers);
+    let hexLayer = drawHexclip(that, results);
+    this.hexLayer = hexLayer;
  }
 
-processData(props){
-    let filters = props.filters;
-    let weights = props.weights;
+processWeights(){
+    let filters = this.props.filters;
+    let weights = this.props.weights;
     let layers = {
         features: [],
         type: "FeatureCollection"
@@ -89,18 +130,37 @@ processData(props){
             layers.features = layers.features.concat(layer.toGeoJSON().features);
         }
     });
+    return layers;
+}
+
+processData(data, layers){
     const aggregation = {
         weightSum: aggregate.sum('weight'),
     };
     return aggregate(
         data['Hexclip'], layers, aggregation);
 }
-drawHexclip(results){
-    let colourScheme = this.computeColourScheme(results);
+
+
+drawHexclip(that, results){
+    console.log(that);
+    let colourScheme = that.computeColourScheme(results);
     const hexLayer = L.geoJson(results, 
         {   
             onEachFeature: function(feature, layer){
-                layer.bindPopup("Weight: "+feature.properties.weightSum);
+                let weightSum = feature.properties.weightSum ? feature.properties.weightSum : 0;
+                layer.on({
+                    mouseover: ((e) => {
+                        var coordinates = e.target.getBounds().getCenter()
+                        var coordinates = [coordinates['lat'], coordinates['lng']];  //Swap Lat and Lng
+                        if (map) {
+                           let layerPopup = L.popup()
+                               .setLatLng(coordinates)
+                               .setContent('Weight: '+weightSum)
+                            map.openPopup(layerPopup);
+                        }
+                    })
+                });
             },
             style: function(feature){
                 if (feature.properties.weightSum) {
@@ -116,9 +176,8 @@ drawHexclip(results){
                 }
             }
         });
-    hexLayer;
-    hexLayer.addTo(this.map);
-    this.hexLayer = hexLayer;
+    hexLayer.addTo(that.map);
+    return hexLayer;
 }
 
  componentWillUnmount(){

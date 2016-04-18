@@ -1,16 +1,20 @@
+import aggregate from 'geojson-polygon-aggregate';
+
 export default function(self) {
-	self.addEventListener('message', function(data, weight){
-		let buffer_data = turf.buffer(data, weight/5, 'kilometers');
-	    buffer_data.properties = {
-	        "fill": "#6BC65F",
-	        "stroke": "#25561F",
-	        "stroke-width": 2
-	    };
-	    let buffer_polygons = L.geoJson(buffer_data, {
-	        pointToLayer: function (feature, latlng) {
-	            return L.polygon(latlng);
-	        }
-	    });
-	    return buffer_polygons;
-	})
-}
+
+  self.addEventListener('message', function(ev) {
+    const data = ev.data[0];
+    const layers = ev.data[1];
+    self.makeRequest(data, layers);
+  });
+
+  self.makeRequest = function(data, layers) {
+    const aggregation = {
+        weightSum: aggregate.sum('weight'),
+    };
+    let results = aggregate(
+        data['Hexclip'], layers, aggregation);
+    self.postMessage(['Done', results]);
+
+  };
+};
