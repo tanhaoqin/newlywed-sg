@@ -2,8 +2,6 @@ import data from '../data';
 import React from 'react';
 import aggregate from 'geojson-polygon-aggregate';
 
-console.log(data);
-
 export default class LeafletMap extends React.Component {
 
  constructor(props){
@@ -16,18 +14,12 @@ export default class LeafletMap extends React.Component {
  }
 
  componentWillUpdate(nextProps, nextState){
-    console.log('componentWillUpdate');
-    if(!nextProps.showSchoolMarkers){
-        console.log('Removing school markers');
-        this.map.removeLayer(nextState['schoolMarkers']);
-    } else {
-        console.log('Adding school markers');
-        nextState['schoolMarkers'].addTo(this.map);
-    }
-    console.log('LeafletMap: currentState: ');
-    console.log(this.state);
-    console.log('LeafletMap: nextState: ');
-    console.log(nextState);
+    this.map.removeLayer(this.hexLayer);
+ }
+
+ componentDidUpdate(){
+    var results = this.processData(this.props);
+    this.drawHexclip(results);
  }
 
  componentDidMount(){
@@ -56,8 +48,29 @@ export default class LeafletMap extends React.Component {
          fillOpacity: 0.8
      };
 
-    let filters = this.props.filters;
-    let weights = this.props.weights;
+    var results = this.processData(this.props);
+    this.drawHexclip(results);
+    // const props = this.props;
+    // const processData = this.processData;
+    // let p1 = new Promise(
+    //     function(resolve, reject){
+    //         console.log("Promise started");
+    //         processData(props);
+    //     });
+    // console.log(p1);
+    // p1
+    // .then(function(val){
+    //     console.log("Success");
+    //     console.log(val);
+    //     })
+    // .catch(function(err){
+    //     console.log("Error: "+err);
+    // });
+ }
+
+processData(props){
+    let filters = props.filters;
+    let weights = props.weights;
     let layers = {
         features: [],
         type: "FeatureCollection"
@@ -76,35 +89,59 @@ export default class LeafletMap extends React.Component {
             layers.features = layers.features.concat(layer.toGeoJSON().features);
         }
     });
-
-    console.log(layers);
     const aggregation = {
         weightSum: aggregate.sum('weight'),
     };
-
-    var results = aggregate(
+    return aggregate(
         data['Hexclip'], layers, aggregation);
-    // console.log(results);
-    var hexLayer = L.geoJson(results, 
+}
+drawHexclip(results){
+    let colourScheme = this.computeColourScheme(results);
+    const hexLayer = L.geoJson(results, 
         {   
+            onEachFeature: function(feature, layer){
+                layer.bindPopup("Weight: "+feature.properties.weightSum);
+            },
             style: function(feature){
                 if (feature.properties.weightSum) {
-                    return {fillOpacity: 0.5, stroke: false, color: 'black'};
+                    let colour;
+                    Object.keys(colourScheme).forEach(function(key){
+                        if (feature.properties.weightSum > key){
+                            colour = colourScheme[key];
+                        }
+                    });
+                    return {fillOpacity: 0.8, stroke: false, color: colour};
                 } else {
-                    return {fillOpacity: 0.5, stroke: false, color: 'red'}; 
+                    return {fillOpacity: 0.8, stroke: false, color: '#edf8fb'}; 
                 }
             }
         });
-    hexLayer.addTo(map);
-
-     
-     // this.setState({schoolMarkers: schoolLayer});
-     // this.addBuffer(this.props.schools, Number(this.props.schoolMarkerRange));
- }
+    hexLayer;
+    hexLayer.addTo(this.map);
+    this.hexLayer = hexLayer;
+}
 
  componentWillUnmount(){
     this.map = null;
  }
+
+computeColourScheme(featureCollection){
+    let max = 0;
+    for (let feature of featureCollection.features) {
+        if (feature.properties.weightSum){
+            if (feature.properties.weightSum > max){
+                max = feature.properties.weightSum;
+            }
+        }
+    }
+    const colour = ["#edf8fb","#b2e2e2","#66c2a4","#2ca25f","#006d2c"];
+    const step = max/5;
+    let breakpoints = {};
+    for (let i = 0; i < 5; i++){
+        breakpoints[(i)*step] = colour[i];
+    }
+    return breakpoints;
+}
 
  render(){
      return (

@@ -8,8 +8,6 @@ export default class SliderInput extends React.Component {
     }
 
     handleChange(){
-        console.log(this.refs.rangeSliderInput.value);
-        console.log(this.props.Id);
         this.props.onSelectWeight(
             this.props.id,
             Number(this.refs.rangeSliderInput.value));
