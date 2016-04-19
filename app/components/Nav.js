@@ -10,6 +10,10 @@ export default class Nav extends React.Component {
 		super(props);
 	}
 
+    addDynamic(){
+        this.props.addDynamic();
+    }
+
     render(){
     	let weights = this.props.weights;
     	const onSelectWeight = this.props.onSelectWeight;
@@ -44,24 +48,23 @@ export default class Nav extends React.Component {
                         </li>
                     </ul>
                     <ul className="collapsible collapsible-accordion">
-                        <li>
-                            <div 
-                            className="collapsible-header waves-effect waves-light black-text" 
-                            style={{
-                                display:"flex",
-                                "justify-content": "space-between",
-                                "align-items": "center"
-                            }}>
-                            <b>Dynamic Weights</b>
-                            <span className="btn-floating btn waves-effect waves-light red">
-                            <i className="material-icons"
+                        <li style={{
+                                    height:"64px",
+                                    "position": "relative",
+                                }}>
+                            <a className="collapsible-header black-text waves-effect waves-light"
                                 style={{
-                                    position: "absolute",
-                                    left: "50%",
-                                    "margin-left": "-15px"
-                                }}>add</i></span>
-                            </div>
-                            <div className="collapsible-body">
+                                    "position": "absolute",
+                                    left: "0px",
+                                    right: "0px"
+                                }}><b>Dynamic Weights</b></a>
+                            <div className="collapsible-body"
+                                style={{
+                                    "position": "absolute",
+                                    top: "64px",
+                                    left: "0px",
+                                    right: "0px"
+                                }}>
                               <ul>
                                 <li>Hello</li>
                                 <li>World</li>                                

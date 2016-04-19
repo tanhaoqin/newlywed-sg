@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux'
 import weights from './weights'
-import waiting from './waiting'
+import dynamic from './dynamic'
 
 const whereToBto = combineReducers({
-	weights, waiting
+	weights, dynamic
 });
 
 export default whereToBto

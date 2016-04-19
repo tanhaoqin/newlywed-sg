@@ -51,6 +51,13 @@ div.profile-card {
 	z-index: 1;
 }
 
+div.dynamic-card {
+	position: absolute;
+	top: 0px;
+	left: 300px;
+	z-index: 1;
+}
+
 div.card-action.row{
 	padding-bottom: 0px;
 }
@@ -62,4 +69,11 @@ div.card-action.row{
     top: 50%;
     margin-top: -32px;
 	z-index: 1;
+}
+
+span.add-dynamic-button {
+    top: 220px;
+    left: 180px;
+    position: absolute;
+    z-index: 9999999;
 }

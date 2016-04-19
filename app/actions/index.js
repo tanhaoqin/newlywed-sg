@@ -13,9 +13,13 @@ export const setWeight = (key, weight) => {
 	}
 }
 
-export const waiting = (value) =>{
+export const setDynamic = (key, weight, buffer, lat, lng) =>{
 	return {
-		type: 'WAITING',
-		value: value
+		type: 'SET_DYNAMIC',
+		key: key,
+		weight: weight,
+		buffer: buffer,
+		lat: lat,
+		lng: lng
 	}
 }

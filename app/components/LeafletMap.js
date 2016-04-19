@@ -14,7 +14,11 @@ export default class LeafletMap extends React.Component {
 		this.initialZoom = 12;
 		this.mapCenterLat = 1.3521;
 		this.mapCenterLng = 103.8198;
-		this.state = {waiting: false}
+		this.dynamicMarkers = {};
+		this.state = {
+			waiting: false,
+			dynamic: {}
+		}
 		let that = this;
 		w.addEventListener('message', function(e){
 			console.log(e);
@@ -39,6 +43,24 @@ export default class LeafletMap extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState){
+		let that = this;
+		if (JSON.stringify(prevProps.dynamic) != JSON.stringify(this.props.dynamic)){
+			Object.keys(this.props.dynamic).forEach(function(key){
+				if (!that.dynamicMarkers[key]){
+					let marker = L.marker(
+					[that.mapCenterLat, that.mapCenterLng], 
+					{
+						draggable: true,
+					})
+					marker.addTo(that.map);
+					that.dynamicMarkers[key] = marker;
+					L.popup()
+						.setLatLng([that.mapCenterLat+0.012, that.mapCenterLng])
+						.setContent("Move this marker to indicate the exact location you want to near to")
+						.openOn(that.map);
+				}
+			});
+		}
 		if (JSON.stringify(prevProps.weights) != JSON.stringify(this.props.weights)){
 			w.postMessage([data.Hexclip.features, this.props.weights]);
 			this.setState({waiting: true});	
@@ -62,15 +84,6 @@ export default class LeafletMap extends React.Component {
 			}
 		});
 
-		var marker = L.marker(
-			[this.mapCenterLat, this.mapCenterLng], 
-			{
-				draggable: true,
-			}).addTo(map);
-		L.popup()
-			.setLatLng([this.mapCenterLat+0.012, this.mapCenterLng])
-			.setContent("Move this marker to indicate the exact location you want to near to")
-			.openOn(map);
 		this.setState({waiting: true});
 		w.postMessage([data.Hexclip.features, this.props.weights]);
 	}
@@ -80,7 +93,7 @@ export default class LeafletMap extends React.Component {
 		{   
 			onEachFeature: function(feature, layer){
 				layer.on({
-					mouseover: ((e) => {
+					contextmenu: ((e) => {
 						var coordinates = e.target.getBounds().getCenter()
 						var coordinates = [coordinates['lat'], coordinates['lng']];  //Swap Lat and Lng
 						if (map) {
@@ -90,7 +103,7 @@ export default class LeafletMap extends React.Component {
 							map.openPopup(layerPopup);
 						}
 					}),
-					contextmenu: ((e) => {
+					dblclick: ((e) => {
 						console.log(e);
 						var coordinates = e.target.getBounds().getCenter()
 						var coordinates = [coordinates['lat'], coordinates['lng']];  //Swap Lat and Lng
@@ -132,7 +145,9 @@ export default class LeafletMap extends React.Component {
 	render(){
 	   return (
 		   <div id="map"
-			ref="map"><Loader waiting={this.state.waiting}/></div>
+			ref="map">
+			<Loader waiting={this.state.waiting}/>
+			</div>
 		   )
 	}
 }
