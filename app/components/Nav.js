@@ -1,6 +1,7 @@
 import React from 'react';
 import SideBar from './SideBar';
 import SideBarSection from './SideBarSection';
+import DynamicLabel from './DynamicLabel';
 import { init } from '../init';
 
 
@@ -28,6 +29,19 @@ export default class Nav extends React.Component {
                 onSelectWeight={onSelectWeight}
                 />);
         });
+        let dynamic = this.props.dynamic;
+        let dynamiclist = [];
+        Object.keys(dynamic).forEach(function(key){
+            console.log(key);
+            dynamiclist.push(<DynamicLabel 
+                key={key}
+                title={key} 
+                weights={dynamic[key].weights}
+                buffer={dynamic[key].buffer}
+                lat={dynamic[key].lat}
+                lon={dynamic[key].lon}
+                />);
+        });
         return (
         	<header>
 	            <ul id="slide-out" className="side-nav fixed blue-grey">
@@ -48,26 +62,11 @@ export default class Nav extends React.Component {
                         </li>
                     </ul>
                     <ul className="collapsible collapsible-accordion">
-                        <li style={{
-                                    height:"64px",
-                                    "position": "relative",
-                                }}>
-                            <a className="collapsible-header black-text waves-effect waves-light"
-                                style={{
-                                    "position": "absolute",
-                                    left: "0px",
-                                    right: "0px"
-                                }}><b>Dynamic Weights</b></a>
-                            <div className="collapsible-body"
-                                style={{
-                                    "position": "absolute",
-                                    top: "64px",
-                                    left: "0px",
-                                    right: "0px"
-                                }}>
+                        <li>
+                            <a className="collapsible-header black-text waves-effect waves-light"><b>Dynamic Weights</b></a>
+                            <div className="collapsible-body">
                               <ul>
-                                <li>Hello</li>
-                                <li>World</li>                                
+                                {dynamiclist}
                               </ul>
                             </div>
                         </li>

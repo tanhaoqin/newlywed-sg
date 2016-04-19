@@ -77,3 +77,7 @@ span.add-dynamic-button {
     position: absolute;
     z-index: 9999999;
 }
+
+div.dynamic-label{
+	line-height: 32px;
+}

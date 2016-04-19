@@ -3,10 +3,10 @@ import React from 'react';
 export default class DynamicCard extends React.Component {
 
 	addDynamicWeight(){
-		this.props.onSetDynamic(this.refs.nameInput.value,Number(this.refs.weightInput.value),this.refs.bufferSize.value,1.3521,103.8198);
+		this.props.onSetDynamic(this.refs.nameInput.value,Number(this.refs.weightInput.value),Number(this.refs.bufferInput.value),1.3521,103.8198);
 		this.refs.nameInput.value = "";
 		this.refs.weightInput.value = "";
-		this.refs.bufferSize.value = "";
+		this.refs.bufferInput.value = "";
 		this.props.onDynamicClick();
 	}
 

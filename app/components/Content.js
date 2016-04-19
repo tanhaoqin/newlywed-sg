@@ -24,7 +24,8 @@ export default class Content extends React.Component {
                 onSetDynamic={this.props.onSetDynamic}
                 onDynamicClick={this.onDynamicClick.bind(this)}/>
             <LeafletMap weights={this.props.weights}
-                dynamic={this.props.dynamic}/>
+                dynamic={this.props.dynamic}
+                onSetDynamic={this.props.onSetDynamic}/>
             <span 
                 className="add-dynamic-button btn-floating btn waves-effect waves-light red"
                 onClick={this.onDynamicClick.bind(this)}>
