@@ -25,6 +25,7 @@
     "classnames": "^2.2.3",
     "cookie-parser": "^1.4.1",
     "ejs": "^2.4.1",
+    "express": "^4.13.4",
     "geojson-polygon-aggregate": "^1.4.1",
     "json-loader": "^0.5.4",
     "leaflet": "^0.7.7",
