@@ -30,7 +30,47 @@ export default class Nav extends React.Component {
 	                <li className="Logo white-text">
 	                <h4>Where To BTO</h4>
 	                <p className="section-description">Add description on how to use the application</p></li>
-	                {sections}
+                    <li className="no-padding white">
+                    <ul className="collapsible collapsible-accordion">
+                        <li>
+                            <a className="collapsible-header waves-effect waves-light black-text"><b>Static Weights</b>
+                            </a>
+                            
+                            <div className="collapsible-body">
+                              <ul>
+                                {sections}
+                              </ul>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul className="collapsible collapsible-accordion">
+                        <li>
+                            <div 
+                            className="collapsible-header waves-effect waves-light black-text" 
+                            style={{
+                                display:"flex",
+                                "justify-content": "space-between",
+                                "align-items": "center"
+                            }}>
+                            <b>Dynamic Weights</b>
+                            <span className="btn-floating btn waves-effect waves-light red">
+                            <i className="material-icons"
+                                style={{
+                                    position: "absolute",
+                                    left: "50%",
+                                    "margin-left": "-15px"
+                                }}>add</i></span>
+                            </div>
+                            <div className="collapsible-body">
+                              <ul>
+                                <li>Hello</li>
+                                <li>World</li>                                
+                              </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+	                
 	            </ul>
             </header>
             )
