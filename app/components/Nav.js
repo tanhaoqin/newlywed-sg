@@ -65,28 +65,8 @@ export default class Nav extends React.Component {
                     </ul>
                     <ul className="collapsible collapsible-accordion">
                         <li>
-<<<<<<< HEAD
-                            <div 
-                            className="collapsible-header waves-effect waves-light black-text" 
-                            style={{
-                                display:"flex",
-                                "justify-content": "space-between",
-                                "align-items": "center"
-                            }}>
-                            <b>Dynamic Weights</b>
-                            <span className="btn-floating btn waves-effect waves-light red">
-                            <i className="material-icons"
-                                style={{
-                                    position: "absolute",
-                                    left: "50%",
-                                    "margin-left": "-15px"
-                                }}>add</i></span>
-                            </div>
-                            <div className="collapsible-body"><p className="section-description"> <i> Places such as work place or grandparent’s house, can be added into your prioritised list of consideration.  Simply click on the plus sign button and drag the drop pin to the location. </i> </p>
-=======
                             <a className="collapsible-header black-text waves-effect waves-light"><b>Dynamic Weights</b></a>
-                            <div className="collapsible-body">
->>>>>>> 11b14455f748ab2a2829b8e2d499a0485a948c26
+                            <div className="collapsible-body"><p className="section-description"> <i> Places such as work place or grandparent’s house, can be added into your prioritised list of consideration.  Simply click on the plus sign button and drag the drop pin to the location. </i> </p>
                               <ul>
                                 {dynamiclist}
                               </ul>

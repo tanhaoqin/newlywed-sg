@@ -75,13 +75,12 @@ div.card-action.row{
 	z-index: 1;
 }
 
-<<<<<<< HEAD
 #site-logo{
     padding-top: 20px;
     margin-left: 35px;
 	width:70%;
 }
-=======
+
 span.add-dynamic-button {
     top: 220px;
     left: 180px;
@@ -92,4 +91,3 @@ span.add-dynamic-button {
 div.dynamic-label{
 	line-height: 32px;
 }
->>>>>>> 11b14455f748ab2a2829b8e2d499a0485a948c26
