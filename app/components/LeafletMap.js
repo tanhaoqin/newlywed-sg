@@ -80,7 +80,7 @@ export default class LeafletMap extends React.Component {
 		{   
 			onEachFeature: function(feature, layer){
 				layer.on({
-					mouseover: ((e) => {
+					contextmenu: ((e) => {
 						var coordinates = e.target.getBounds().getCenter()
 						var coordinates = [coordinates['lat'], coordinates['lng']];  //Swap Lat and Lng
 						if (map) {
@@ -90,7 +90,7 @@ export default class LeafletMap extends React.Component {
 							map.openPopup(layerPopup);
 						}
 					}),
-					contextmenu: ((e) => {
+					dblclick: ((e) => {
 						console.log(e);
 						var coordinates = e.target.getBounds().getCenter()
 						var coordinates = [coordinates['lat'], coordinates['lng']];  //Swap Lat and Lng

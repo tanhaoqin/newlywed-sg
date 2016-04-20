@@ -41,6 +41,8 @@ span.thumb, span.thumb.active{
 p.section-description {
 	line-height: 15px;
 	padding: 1rem;
+	text-align: justify;
+	width: 220px;
 }
 
 div.profile-card {
@@ -53,6 +55,8 @@ div.profile-card {
 
 div.card-action.row{
 	padding-bottom: 0px;
+	text-align: justify;
+	width: 300px;
 }
 
 .preloader-wrapper{
@@ -62,4 +66,10 @@ div.card-action.row{
     top: 50%;
     margin-top: -32px;
 	z-index: 1;
+}
+
+#site-logo{
+    padding-top: 20px;
+    margin-left: 35px;
+	width:70%;
 }
