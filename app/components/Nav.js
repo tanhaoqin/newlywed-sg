@@ -1,6 +1,7 @@
 import React from 'react';
 import SideBar from './SideBar';
 import SideBarSection from './SideBarSection';
+import DynamicLabel from './DynamicLabel';
 import { init } from '../init';
 
 
@@ -9,6 +10,10 @@ export default class Nav extends React.Component {
 	constructor(props){
 		super(props);
 	}
+
+    addDynamic(){
+        this.props.addDynamic();
+    }
 
     render(){
     	let weights = this.props.weights;
@@ -22,6 +27,19 @@ export default class Nav extends React.Component {
                 contents={categories[key]}
                 weights={weights}
                 onSelectWeight={onSelectWeight}
+                />);
+        });
+        let dynamic = this.props.dynamic;
+        let dynamiclist = [];
+        Object.keys(dynamic).forEach(function(key){
+            console.log(key);
+            dynamiclist.push(<DynamicLabel 
+                key={key}
+                title={key} 
+                weights={dynamic[key].weights}
+                buffer={dynamic[key].buffer}
+                lat={dynamic[key].lat}
+                lon={dynamic[key].lon}
                 />);
         });
         return (
@@ -47,6 +65,7 @@ export default class Nav extends React.Component {
                     </ul>
                     <ul className="collapsible collapsible-accordion">
                         <li>
+<<<<<<< HEAD
                             <div 
                             className="collapsible-header waves-effect waves-light black-text" 
                             style={{
@@ -64,9 +83,12 @@ export default class Nav extends React.Component {
                                 }}>add</i></span>
                             </div>
                             <div className="collapsible-body"><p className="section-description"> <i> Places such as work place or grandparent’s house, can be added into your prioritised list of consideration.  Simply click on the plus sign button and drag the drop pin to the location. </i> </p>
+=======
+                            <a className="collapsible-header black-text waves-effect waves-light"><b>Dynamic Weights</b></a>
+                            <div className="collapsible-body">
+>>>>>>> 11b14455f748ab2a2829b8e2d499a0485a948c26
                               <ul>
-                                <li>Hello</li>
-                                <li>World</li>                                
+                                {dynamiclist}
                               </ul>
                             </div>
                         </li>

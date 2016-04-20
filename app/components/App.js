@@ -9,7 +9,7 @@ import {profile} from '../profile';
 import { init } from '../init';
 import { createStore } from 'redux'
 import NavContainer from '../containers/NavContainer';
-import Content from './Content';
+import ContentContainer from '../containers/ContentContainer';
 
 export default class App extends React.Component {
     
@@ -21,7 +21,7 @@ export default class App extends React.Component {
         return (
             <div>
                 <NavContainer />
-                <Content />
+                <ContentContainer />
             </div>
         );
     }

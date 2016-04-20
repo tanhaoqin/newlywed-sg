@@ -4,7 +4,8 @@ import Nav from '../components/Nav'
 
 const mapStateToProps = (state) => {
   return {
-    weights: state.weights
+    weights: state.weights,
+    dynamic: state.dynamic
   }
 }
 
@@ -13,6 +14,9 @@ const mapDispatchToProps = (dispatch) => {
     onSelectWeight: (key, weight) => {
       dispatch(setWeight(key, weight));
     },
+    onAddDynamic: (key, weight, lat, lng) => {
+      dispatch(setDynamic(key, weight, lat, lng));
+    }
   }
 }
 

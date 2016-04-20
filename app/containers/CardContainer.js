@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { setProfile } from '../actions'
-import Card from '../components/Card'
+import ProfileCard from '../components/ProfileCard'
 
 const mapDispatchToProps = (dispatch) => {
   return {  
@@ -13,6 +13,6 @@ const mapDispatchToProps = (dispatch) => {
 const CardContainer = connect(
   null,
   mapDispatchToProps
-)(Card)
+)(ProfileCard)
 
 export default CardContainer

@@ -4,6 +4,7 @@ import React from 'react';
 import aggregate from 'geojson-polygon-aggregate';
 import AsyncTask from 'async-task';
 import work from 'webworkify';
+import turf from 'turf';
 
 const w = work(require('../worker.js'));
 
@@ -14,7 +15,12 @@ export default class LeafletMap extends React.Component {
 		this.initialZoom = 12;
 		this.mapCenterLat = 1.3521;
 		this.mapCenterLng = 103.8198;
-		this.state = {waiting: false}
+		this.dynamicMarkers = {};
+		this.buffers = {};
+		this.state = {
+			waiting: false,
+			dynamic: {}
+		}
 		let that = this;
 		w.addEventListener('message', function(e){
 			console.log(e);
@@ -29,7 +35,8 @@ export default class LeafletMap extends React.Component {
 	}
 
 	componentWillUpdate(nextProps, nextState){
-		if (JSON.stringify(nextProps.weights) != JSON.stringify(this.props.weights)){
+		if ((JSON.stringify(nextProps.weights) != JSON.stringify(this.props.weights))||
+			(JSON.stringify(nextProps.dynamic) != JSON.stringify(this.props.dynamic))){
 			this.removeOverlay();	
 		}
 	}
@@ -39,7 +46,62 @@ export default class LeafletMap extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState){
-		if (JSON.stringify(prevProps.weights) != JSON.stringify(this.props.weights)){
+		let that = this;
+		if (JSON.stringify(prevProps.dynamic) != JSON.stringify(this.props.dynamic)){
+			Object.keys(this.props.dynamic).forEach(function(key){
+				let dynamicProperty = that.props.dynamic[key];
+				// Create initial marker and popup
+				if (!that.dynamicMarkers[key]){
+					let marker = L.marker(
+					[that.mapCenterLat, that.mapCenterLng], 
+					{
+						draggable: true,
+					})
+					marker.on('dragend', (e) => {
+						console.log(e);
+						let lat = e.target._latlng.lat;
+						let lng = e.target._latlng.lng;
+						that.props.onSetDynamic(key, 
+							dynamicProperty.weights,
+							dynamicProperty.buffer,
+							lat,lng);
+					});
+					marker.addTo(that.map);
+					that.dynamicMarkers[key] = marker;
+					L.popup()
+						.setLatLng([that.mapCenterLat+0.012, that.mapCenterLng])
+						.setContent("Move this marker to indicate the exact location you want to near to")
+						.openOn(that.map);
+				}
+				if (JSON.stringify(prevProps.dynamic[key]) != JSON.stringify(dynamicProperty)){
+					const pt = {
+						type: "Feature",
+						properties: {},
+						geometry: {
+							type: "Point",
+							coordinates: [dynamicProperty.lon, dynamicProperty.lat]
+						}
+					};
+					const buffered = turf.buffer(pt, dynamicProperty.buffer, 'kilometers').features[0];
+					console.log(buffered);
+					for(let feature of data.Hexclip.features){
+						const centroid = turf.centroid(feature);
+						let intersect = turf.inside(centroid,buffered);
+						if (intersect) {
+							feature.properties[key] = dynamicProperty.weights;
+						} else {
+							feature.properties[key] = 0;
+						}
+					}
+					console.log(data);
+				}
+			});
+			console.log('dynamic changed');
+			w.postMessage([data.Hexclip.features, this.props.weights]);
+			this.setState({waiting: true});	
+		}
+		else if (JSON.stringify(prevProps.weights) != JSON.stringify(this.props.weights)){
+			console.log('weights changed');
 			w.postMessage([data.Hexclip.features, this.props.weights]);
 			this.setState({waiting: true});	
 		}
@@ -62,15 +124,6 @@ export default class LeafletMap extends React.Component {
 			}
 		});
 
-		var marker = L.marker(
-			[this.mapCenterLat, this.mapCenterLng], 
-			{
-				draggable: true,
-			}).addTo(map);
-		L.popup()
-			.setLatLng([this.mapCenterLat+0.012, this.mapCenterLng])
-			.setContent("Move this marker to indicate the exact location you want to near to")
-			.openOn(map);
 		this.setState({waiting: true});
 		w.postMessage([data.Hexclip.features, this.props.weights]);
 	}
@@ -132,7 +185,9 @@ export default class LeafletMap extends React.Component {
 	render(){
 	   return (
 		   <div id="map"
-			ref="map"><Loader waiting={this.state.waiting}/></div>
+			ref="map">
+			<Loader waiting={this.state.waiting}/>
+			</div>
 		   )
 	}
 }
