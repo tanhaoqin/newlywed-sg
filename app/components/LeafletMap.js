@@ -160,7 +160,7 @@ export default class LeafletMap extends React.Component {
 					});
 					return {fillOpacity: 0.75, stroke: false, color: colour};
 				} else {
-					return {fillOpacity: 0.75, stroke: false, color: '#edf8fb'}; 
+					return {fillOpacity: 0.25, stroke: false, color: '#edf8fb'}; 
 				}
 			}
 		});
