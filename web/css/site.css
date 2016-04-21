@@ -99,3 +99,7 @@ span.add-dynamic-button {
 div.dynamic-label{
 	line-height: 32px;
 }
+
+div.profile-button.row.card-action{
+	padding: 0px;
+}
