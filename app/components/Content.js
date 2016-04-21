@@ -27,14 +27,10 @@ export default class Content extends React.Component {
                 dynamic={this.props.dynamic}
                 onSetDynamic={this.props.onSetDynamic}/>
             <span 
-                className="add-dynamic-button btn-floating btn waves-effect waves-light red"
+                className="add-dynamic-button btn-floating btn-large waves-effect waves-light red"
                 onClick={this.onDynamicClick.bind(this)}>
             <i className="material-icons"
-                style={{
-                    position: "absolute",
-                    left: "50%",
-                    "margin-left": "-18px"
-                }}>add</i></span>
+                >add</i></span>
             </div></main>)
     }
 }
