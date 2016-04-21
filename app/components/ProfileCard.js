@@ -18,8 +18,15 @@ export default class ProfileCard extends React.Component {
               <p><i>A ready-made profile template identifying conventional family norms can be accessed on the top right. Click on one of the two symbols that best describe your ideal family plan to generate a result.</i> </p>
             </div>
             <div className="card-action row">
-                <div className="col s6"><a onClick={this.selectFamily.bind(this)}>Family focused</a></div>
-                <div className="col s6"><a onClick={this.selectCareer.bind(this)}>Career focused</a></div>
+                <div className="col s6"><img 
+                    onClick={this.selectFamily.bind(this)}
+                    src="web/img/FamilyOriented.png"
+                    className="responsive-img"/></div>
+                <div className="col s6">
+                <img 
+                    onClick={this.selectCareer.bind(this)}
+                    src="web/img/CareerOriented.png"
+                    className="responsive-img" /></div>
             </div>
           </div>
             )
