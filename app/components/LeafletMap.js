@@ -1,10 +1,9 @@
 import Loader from './Loader';
 import data from '../data';
 import React from 'react';
-import aggregate from 'geojson-polygon-aggregate';
-import AsyncTask from 'async-task';
 import work from 'webworkify';
 import turf from 'turf';
+import L from 'leaflet';
 
 const w = work(require('../worker.js'));
 
