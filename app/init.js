@@ -40,7 +40,8 @@ export const init = {
 				GeneralHos: {
 					name: "Hospital", 
 					value: 3}
-			}
+			},
+			icon: 'local_hospital'
 		},
 		Shopping: {
 			name: "Shopping",
@@ -51,10 +52,11 @@ export const init = {
 				ShoppingMa: {
 					name: "Shopping Mall", 
 					value: 2}
-			}
+			},
+			icon: 'local_mall'
 		},
 		EducationInstitutions: {
-			name: "Education Institutions",
+			name: "Education",
 			weights: {
 				Primary: {
 					name: "Primary", 
@@ -65,7 +67,8 @@ export const init = {
 				Tertiary: {
 					name: "Tertiary", 
 					},
-			}
+			},
+			icon: 'local_library'
 		},
 		CareFacilities: {
 			name: "Care Facilities",
@@ -76,7 +79,8 @@ export const init = {
 				Eldercare: {
 					name: "Eldercare", 
 					},
-			}
+			},
+			icon: 'child_care'
 		},
 		Transportation: {
 			name: "Transportation",
@@ -84,7 +88,8 @@ export const init = {
 				MRT: {
 					name: "MRT", 
 					},
-			}
+			},
+			icon: 'train'
 		},
 		Others: {
 			name: "Others",
@@ -98,7 +103,8 @@ export const init = {
 				Library: {
 					name: "Libraries", 
 					},
-			}
+			},
+			icon: 'local_play'
 		},
 	},
 	weights: {

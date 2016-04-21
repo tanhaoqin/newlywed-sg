@@ -60,6 +60,14 @@ div.dynamic-card {
 	z-index: 1;
 }
 
+div.info-card {
+    width: 320px;
+    position: absolute;
+    top: 0px;
+    left: 300px;
+    z-index: 1;
+}
+
 div.card-action.row{
 	padding-bottom: 0px;
 	text-align: justify;
@@ -82,8 +90,8 @@ div.card-action.row{
 }
 
 span.add-dynamic-button {
-    top: 220px;
-    left: 180px;
+    bottom: 100px;
+    right: 100px;
     position: absolute;
     z-index: 9999999;
 }
