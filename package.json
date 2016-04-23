@@ -31,6 +31,7 @@
     "json-loader": "^0.5.4",
     "leaflet": "^0.7.7",
     "materialize-css": "^0.97.6",
+    "minifyify": "^7.3.3",
     "morgan": "^1.7.0",
     "promise": "^7.1.1",
     "react": "^0.14.8",
@@ -42,7 +43,7 @@
     "turf": "^2.0.2",
     "webworkify": "^1.1.0"
   },
-  "browser":{
+  "browser": {
     "materialize": "./node_modules/materialize-css/bin/materialize.js"
   }
 }
