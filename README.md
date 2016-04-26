@@ -64,7 +64,6 @@ We chose the following 6 Categories as the possible facilities that newlyweds wo
     - Libraries
     - Police Stations
     - Fire Stations
-###
 We did not include certain other facilities due to time contraint and availability of data:
 - Bus Stops
 - Mama Shops
