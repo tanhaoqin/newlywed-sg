@@ -75,7 +75,7 @@ export default class Nav extends React.Component {
                             
                             <div className="collapsible-body waves-effect waves-light black-text">
                               <ul>
-                                <li><p className="section-description"><i> WELCOME. This map presents information to locate the best residential place in Singapore for newlyweds and those planning to get married. Our aggregation approach will generate interactive web maps where you can select your desired BTO flat using the tabs below to choose facilities and amenities that you consider as important. </i></p></li>
+                                <li><p className="section-description"><i> WELCOME. This map presents information to locate the best residential place in Singapore for newlyweds and those planning to get married. Our aggregation approach will generate interactive web maps where you can select your desired BTO flat using the tabs below to choose facilities and amenities that you consider as important. </i>Code repository can be found <a href="https://github.com/tanhaoqin/where-to-bto">here</a>.</p></li>
                               </ul>
                             </div>
                         </li>
